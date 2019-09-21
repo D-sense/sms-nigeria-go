@@ -20,6 +20,5 @@ func ContactEndpoint(url string) ([]byte, error) {
 		return body, err
 	}
 
-	//fmt.Println( fmt.Printf("DATA: %s", body))
 	return body, err
 }

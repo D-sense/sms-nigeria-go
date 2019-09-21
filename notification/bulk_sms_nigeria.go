@@ -14,7 +14,7 @@ type BulkSmsNigeriaNotification struct {
 	ApiToken     string
 }
 
-type smsRepository struct{}
+type bulkSmsNigeriaRepository struct{}
 
 type bulkSmsNigeriaResponse struct {
 	Status int `json:"0"`
@@ -24,7 +24,7 @@ type bulkSmsNigeriaResponse struct {
 	} `json:"data"`
 }
 
-func (*smsRepository) SendSMS(sms *BulkSmsNigeriaNotification) (response bulkSmsNigeriaResponse, err error) {
+func (*bulkSmsNigeriaRepository) SendSMS(sms *BulkSmsNigeriaNotification) (response bulkSmsNigeriaResponse, err error) {
 	var smsData BulkSmsNigeriaNotification
 	var bulkSms bulkSmsNigeriaResponse
 
@@ -40,10 +40,10 @@ func (*smsRepository) SendSMS(sms *BulkSmsNigeriaNotification) (response bulkSms
 	var result []byte
 	result, err = util.ContactEndpoint(prepareURL)
 	if err != nil  {
-		return response, err
+		return bulkSmsNigeriaResponse{}, err
 	}
 
-	json.Unmarshal(result, &bulkSms)
+	err = json.Unmarshal(result, &bulkSms)
 
 	return bulkSms, err
 }

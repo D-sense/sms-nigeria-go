@@ -9,11 +9,11 @@ type SmsController struct {
 	smsNotificationService
 }
 
-func (SmsController) SendSMS(sms *BulkSmsNigeriaNotification) (response bulkSmsNigeriaResponse, err error ) {
-	smsRepository := smsRepository{}
+func (SmsController) SendBulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response bulkSmsNigeriaResponse, err error ) {
+	smsRepository := bulkSmsNigeriaRepository{}
 	smsValidator := smsValidator{}
 
-	smsServiceComponent := smsNotificationService {
+	smsServiceComponent := smsNotificationService{
 		&smsRepository,
 			&smsValidator,
 	}
@@ -21,7 +21,7 @@ func (SmsController) SendSMS(sms *BulkSmsNigeriaNotification) (response bulkSmsN
 	var validationErr map[string]interface{}
 	validationErr = smsServiceComponent.validate.ValidateBulkSmsNigeriaInput(sms)
 	if len(validationErr) > 0  {
-		err = errors.New(fmt.Sprintf("%v", err))
+		err = errors.New(fmt.Sprintf("%v", validationErr))
 		return response, err
 	}
 
