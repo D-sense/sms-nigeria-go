@@ -17,8 +17,10 @@ func ContactEndpoint(url string) ([]byte, error) {
 	response, err := spaceClient.Do(request)
 	body, readErr := ioutil.ReadAll(response.Body)
 	if readErr != nil {
+		err = readErr
 		return body, err
 	}
 
-	return body, err
+	return body, nil
 }
+
