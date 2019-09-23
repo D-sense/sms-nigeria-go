@@ -12,15 +12,13 @@ type SmsController struct {
 
 func (SmsController) SendBulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response bulkSmsNigeriaResponse, err error ) {
 	smsRepository := bulkSmsNigeriaRepository{}
-	smsValidator := bulkSmsNigeriaValidator{}
 
 	smsServiceComponent := bulkSmsNigeriaNotificationService{
 		&smsRepository,
-			&smsValidator,
 	}
 
 	var validationErr map[string]interface{}
-	validationErr = smsServiceComponent.validate.ValidateBulkSmsNigeriaInput(sms)
+	validationErr = smsServiceComponent.smsNotificationRepo.ValidateBulkSmsNigeriaInput(sms)
 	if len(validationErr) > 0  {
 		err = errors.New(fmt.Sprintf("%v", validationErr))
 		return response, err
@@ -36,15 +34,13 @@ func (SmsController) SendBulkSmsNigeria(sms *BulkSmsNigeriaNotification) (respon
 
 func (SmsController) SendSmsClone(sms *SmsCloneNotification, route string) (response smsCloneResponse, err error ) {
 	smsRepository := smsCloneRepository{}
-	smsValidator := SmsCloneValidator{}
 
 	smsServiceComponent := smsCloneNotificationService{
 		&smsRepository,
-			&smsValidator,
 	}
 
 	var validationErr map[string]interface{}
-	validationErr = smsServiceComponent.validate.ValidateSmsCloneInput(sms)
+	validationErr = smsServiceComponent.smsNotificationRepo.ValidateSmsCloneInput(sms)
 	if len(validationErr) > 0  {
 		err = errors.New(fmt.Sprintf("%v", validationErr))
 		return response, err
@@ -60,15 +56,13 @@ func (SmsController) SendSmsClone(sms *SmsCloneNotification, route string) (resp
 
 func (SmsController) CheckBalanceSmsClone(sms *SmsCloneNotification) (response string, err error ) {
 	smsRepository := smsCloneRepository{}
-	smsValidator := SmsCloneValidator{}
 
 	smsServiceComponent := smsCloneNotificationService{
 		&smsRepository,
-			&smsValidator,
 	}
 
 	var validationErr map[string]interface{}
-	validationErr = smsServiceComponent.validate.ValidateSmsCloneCredentials(sms)
+	validationErr = smsServiceComponent.smsNotificationRepo.ValidateSmsCloneCredentials(sms)
 	if len(validationErr) > 0  {
 		err = errors.New(fmt.Sprintf("%v", validationErr))
 		return response, err

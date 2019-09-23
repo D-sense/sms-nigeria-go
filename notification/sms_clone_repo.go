@@ -88,6 +88,47 @@ func (*smsCloneRepository) SmsCloneCheckBalance() (response string, err error) {
    return response, nil
 }
 
+func (*smsCloneRepository) ValidateSmsCloneInput(smsInfo *SmsCloneNotification) (err map[string]interface{}) {
+	err = make(map[string]interface{})
+
+	if smsInfo.Username == "" {
+		err["Username"] = util.ErrMissingUsername
+	}
+
+	if smsInfo.Sender == "" {
+		err["Sender"] = util.ErrMissingSender
+	}
+
+	if smsInfo.Recipient == "" {
+		err["Recipient"] = util.ErrMissingRecipient
+	}
+
+	if smsInfo.Message == "" {
+		err["Message"] = util.ErrMissingMessage
+	}
+
+	if smsInfo.Password == "" {
+		err["Password"] = util.ErrMissingPassword
+	}
+
+	return
+}
+
+func (*smsCloneRepository) ValidateSmsCloneCredentials(smsInfo *SmsCloneNotification) (err map[string]interface{}) {
+	err = make(map[string]interface{})
+
+	if smsInfo.Username == "" {
+		err["Username"] = util.ErrMissingUsername
+	}
+
+	if smsInfo.Password == "" {
+		err["Password"] = util.ErrMissingPassword
+	}
+
+	return
+}
+
+
 func ResponseParser(text string) (parsedResponse smsCloneResponse, err error) {
 	result := strings.Split(text, "|")
 
@@ -111,3 +152,5 @@ func ResponseParser(text string) (parsedResponse smsCloneResponse, err error) {
 
 	return
 }
+
+

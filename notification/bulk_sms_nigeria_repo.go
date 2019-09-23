@@ -48,3 +48,24 @@ func (*bulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification)
 	return bulkSms, err
 }
 
+func (*bulkSmsNigeriaRepository) ValidateBulkSmsNigeriaInput(smsInfo *BulkSmsNigeriaNotification) (err map[string]interface{}) {
+	err = make(map[string]interface{})
+
+	if smsInfo.Sender == "" {
+		err["Sender"] = util.ErrMissingSender
+	}
+
+	if smsInfo.Recipient == "" {
+		err["Recipient"] = util.ErrMissingRecipient
+	}
+
+	if smsInfo.Body == "" {
+		err["Body"] = util.ErrMissingBody
+	}
+
+	if smsInfo.ApiToken == "" {
+		err["ApiToken"] = util.ErrMissingApiToken
+	}
+
+	return
+}
