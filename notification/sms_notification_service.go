@@ -1,22 +1,22 @@
 package notification
 
 //Bulk_SMS_Nigeria service
-type smsNotificationRepository interface {
-	BulkSmsNigeria(sms *BulkSmsNigeriaNotification) (bulkSmsNigeriaResponse, error)
+type BulkSmsNigeriaRepositoryInterface interface {
+	BulkSmsNigeria(sms *BulkSmsNigeriaNotification) (BulkSmsNigeriaResponse, error)
 	ValidateBulkSmsNigeriaInput(smsInfo *BulkSmsNigeriaNotification) (err map[string]interface{})
 }
 
-type smsCloneNotificationRepository interface {
-	SmsClone(sms *SmsCloneNotification, route string) (smsCloneResponse, error)
-	SmsCloneCheckBalance() (response string, err error)
+type SmsCloneNotificationRepositoryInterface interface {
+	SmsClone(sms *SmsCloneNotification, route string) (SmsCloneResponse, error)
+	SmsCloneCheckBalance(sms *SmsCloneCredential) (response string, err error)
 	ValidateSmsCloneInput(smsInfo *SmsCloneNotification) (err map[string]interface{})
-	ValidateSmsCloneCredentials(smsInfo *SmsCloneNotification) (err map[string]interface{})
+	ValidateSmsCloneCredentials(smsInfo *SmsCloneCredential) (err map[string]interface{})
 }
 
-type bulkSmsNigeriaNotificationService struct {
-	smsNotificationRepo smsNotificationRepository
+type BulkSmsNigeriaComponent struct {
+	NotifyBulkSmsNigeria BulkSmsNigeriaRepositoryInterface
 }
 
-type smsCloneNotificationService struct {
-	smsNotificationRepo smsCloneNotificationRepository
+type SmsCloneComponent struct {
+	NotifySmsClone SmsCloneNotificationRepositoryInterface
 }

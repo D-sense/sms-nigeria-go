@@ -15,7 +15,12 @@ type SmsCloneNotification struct {
 	Message      string
 }
 
-type smsCloneResponse struct {
+type SmsCloneCredential struct {
+	Username     string
+	Password     string
+}
+
+type SmsCloneResponse struct {
 	BatchCode                      string                 
 	BatchDescription               string                 
 	StatusCode                     string                 
@@ -25,11 +30,11 @@ type smsCloneResponse struct {
 	StatusDescription              string
 }
 
-type smsCloneRepository struct{}
+type SmsCloneRepository struct{}
 
-func (*smsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (response smsCloneResponse, err error) {
+func (*SmsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (response SmsCloneResponse, err error) {
 	var smsData SmsCloneNotification
-	var smsClone smsCloneResponse
+	var smsClone SmsCloneResponse
     var preparedURL string
 
 	smsData.Sender = sms.Sender
@@ -62,20 +67,20 @@ func (*smsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (re
 	var result []byte
 	result, err = util.ContactEndpoint(preparedURL)
 	if err != nil  {
-		return smsCloneResponse{}, err
+		return SmsCloneResponse{}, err
 	}
 
 	smsClone, err = ResponseParser(string(result))
 	if err != nil  {
-		return smsCloneResponse{}, err
+		return SmsCloneResponse{}, err
 	}
 
 	return smsClone, err
 }
 
-func (*smsCloneRepository) SmsCloneCheckBalance() (response string, err error) {
-	preparedURL := util.SmsCloneCheckBalanceURL+"?username="+os.Getenv("USERNAME")+
-	"&password="+os.Getenv("PASSWORD")
+func (*SmsCloneRepository) SmsCloneCheckBalance(sms *SmsCloneCredential) (response string, err error) {
+	preparedURL := util.SmsCloneCheckBalanceURL+"?username="+sms.Username+
+	"&password="+sms.Password
 
 	// contact endpoint
 	var result []byte
@@ -88,7 +93,7 @@ func (*smsCloneRepository) SmsCloneCheckBalance() (response string, err error) {
    return response, nil
 }
 
-func (*smsCloneRepository) ValidateSmsCloneInput(smsInfo *SmsCloneNotification) (err map[string]interface{}) {
+func (*SmsCloneRepository) ValidateSmsCloneInput(smsInfo *SmsCloneNotification) (err map[string]interface{}) {
 	err = make(map[string]interface{})
 
 	if smsInfo.Username == "" {
@@ -114,7 +119,7 @@ func (*smsCloneRepository) ValidateSmsCloneInput(smsInfo *SmsCloneNotification) 
 	return
 }
 
-func (*smsCloneRepository) ValidateSmsCloneCredentials(smsInfo *SmsCloneNotification) (err map[string]interface{}) {
+func (*SmsCloneRepository) ValidateSmsCloneCredentials(smsInfo *SmsCloneCredential) (err map[string]interface{}) {
 	err = make(map[string]interface{})
 
 	if smsInfo.Username == "" {
@@ -128,13 +133,12 @@ func (*smsCloneRepository) ValidateSmsCloneCredentials(smsInfo *SmsCloneNotifica
 	return
 }
 
-
-func ResponseParser(text string) (parsedResponse smsCloneResponse, err error) {
+func ResponseParser(text string) (parsedResponse SmsCloneResponse, err error) {
 	result := strings.Split(text, "|")
 
 	if len(result) <= 1 {
 		err = errors.New(util.PossibleCredentialsErr)
-		return smsCloneResponse{}, err
+		return SmsCloneResponse{}, err
 	}
 
 	first := strings.Split(result[0], "-")

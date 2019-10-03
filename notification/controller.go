@@ -6,25 +6,25 @@ import (
 )
 
 type SmsController struct {
-	bulkSmsNigeriaNotificationService
-	smsCloneNotificationService
+	BulkSmsNigeriaComponent
+	SmsCloneComponent
 }
 
-func (SmsController) SendBulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response bulkSmsNigeriaResponse, err error ) {
-	smsRepository := bulkSmsNigeriaRepository{}
+func (SmsController) SendBulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response BulkSmsNigeriaResponse, err error ) {
+	var smsRepository BulkSmsNigeriaRepository
 
-	smsServiceComponent := bulkSmsNigeriaNotificationService{
+	smsServiceComponent := BulkSmsNigeriaComponent{
 		&smsRepository,
 	}
 
 	var validationErr map[string]interface{}
-	validationErr = smsServiceComponent.smsNotificationRepo.ValidateBulkSmsNigeriaInput(sms)
+	validationErr = smsServiceComponent.NotifyBulkSmsNigeria.ValidateBulkSmsNigeriaInput(sms)
 	if len(validationErr) > 0  {
 		err = errors.New(fmt.Sprintf("%v", validationErr))
 		return response, err
 	}
 
-	response, err = smsServiceComponent.smsNotificationRepo.BulkSmsNigeria(sms)
+	response, err = smsServiceComponent.NotifyBulkSmsNigeria.BulkSmsNigeria(sms)
 	if err != nil  {
 		return response, err
 	}
@@ -32,21 +32,21 @@ func (SmsController) SendBulkSmsNigeria(sms *BulkSmsNigeriaNotification) (respon
 	return response, nil
 }
 
-func (SmsController) SendSmsClone(sms *SmsCloneNotification, route string) (response smsCloneResponse, err error ) {
-	smsRepository := smsCloneRepository{}
+func (SmsController) SendSmsClone(sms *SmsCloneNotification, route string) (response SmsCloneResponse, err error ) {
+	smsRepository := SmsCloneRepository{}
 
-	smsServiceComponent := smsCloneNotificationService{
+	smsServiceComponent := SmsCloneComponent{
 		&smsRepository,
 	}
 
 	var validationErr map[string]interface{}
-	validationErr = smsServiceComponent.smsNotificationRepo.ValidateSmsCloneInput(sms)
+	validationErr = smsServiceComponent.NotifySmsClone.ValidateSmsCloneInput(sms)
 	if len(validationErr) > 0  {
 		err = errors.New(fmt.Sprintf("%v", validationErr))
 		return response, err
 	}
 
-	response, err = smsServiceComponent.smsNotificationRepo.SmsClone(sms, route)
+	response, err = smsServiceComponent.NotifySmsClone.SmsClone(sms, route)
 	if err != nil  {
 		return response, err
 	}
@@ -54,21 +54,21 @@ func (SmsController) SendSmsClone(sms *SmsCloneNotification, route string) (resp
 	return response, nil
 }
 
-func (SmsController) CheckBalanceSmsClone(sms *SmsCloneNotification) (response string, err error ) {
-	smsRepository := smsCloneRepository{}
+func (SmsController) CheckBalanceSmsClone(sms *SmsCloneCredential) (response string, err error ) {
+	smsRepository := SmsCloneRepository{}
 
-	smsServiceComponent := smsCloneNotificationService{
+	smsServiceComponent := SmsCloneComponent{
 		&smsRepository,
 	}
 
 	var validationErr map[string]interface{}
-	validationErr = smsServiceComponent.smsNotificationRepo.ValidateSmsCloneCredentials(sms)
+	validationErr = smsServiceComponent.NotifySmsClone.ValidateSmsCloneCredentials(sms)
 	if len(validationErr) > 0  {
 		err = errors.New(fmt.Sprintf("%v", validationErr))
 		return response, err
 	}
 
-	response, err = smsServiceComponent.smsNotificationRepo.SmsCloneCheckBalance()
+	response, err = smsServiceComponent.NotifySmsClone.SmsCloneCheckBalance(sms)
 	if err != nil  {
 		return response, err
 	}

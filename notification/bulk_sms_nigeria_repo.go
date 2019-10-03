@@ -14,9 +14,7 @@ type BulkSmsNigeriaNotification struct {
 	ApiToken     string
 }
 
-type bulkSmsNigeriaRepository struct{}
-
-type bulkSmsNigeriaResponse struct {
+type BulkSmsNigeriaResponse struct {
 	Status int `json:"0"`
 	Data struct {
 		Status  string `json:"status"`
@@ -24,9 +22,11 @@ type bulkSmsNigeriaResponse struct {
 	} `json:"data"`
 }
 
-func (*bulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response bulkSmsNigeriaResponse, err error) {
+type BulkSmsNigeriaRepository struct{}
+
+func (*BulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response BulkSmsNigeriaResponse, err error) {
 	var smsData BulkSmsNigeriaNotification
-	var bulkSms bulkSmsNigeriaResponse
+	var bulkSms BulkSmsNigeriaResponse
 
 	smsData.Sender = sms.Sender
 	smsData.Recipient = sms.Recipient
@@ -40,7 +40,7 @@ func (*bulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification)
 	var result []byte
 	result, err = util.ContactEndpoint(prepareURL)
 	if err != nil  {
-		return bulkSmsNigeriaResponse{}, err
+		return BulkSmsNigeriaResponse{}, err
 	}
 
 	err = json.Unmarshal(result, &bulkSms)
@@ -48,7 +48,7 @@ func (*bulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification)
 	return bulkSms, err
 }
 
-func (*bulkSmsNigeriaRepository) ValidateBulkSmsNigeriaInput(smsInfo *BulkSmsNigeriaNotification) (err map[string]interface{}) {
+func (*BulkSmsNigeriaRepository) ValidateBulkSmsNigeriaInput(smsInfo *BulkSmsNigeriaNotification) (err map[string]interface{}) {
 	err = make(map[string]interface{})
 
 	if smsInfo.Sender == "" {
