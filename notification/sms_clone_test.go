@@ -1,7 +1,7 @@
 package notification
 
 import (
-	"github.com/d-sense/go-sms-nigeria/util"
+	"github.com/d-sense/sms-nigeria-go/util"
 	"errors"
 	"reflect"
 	"testing"

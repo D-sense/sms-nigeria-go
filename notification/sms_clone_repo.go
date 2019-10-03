@@ -4,7 +4,7 @@ import (
 	"errors"
 	"os"
 	"strings"
-	"github.com/d-sense/go-sms-nigeria/util"
+	"github.com/d-sense/sms-nigeria-go/util"
 )
 
 type SmsCloneNotification struct {

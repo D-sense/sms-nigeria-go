@@ -2,7 +2,7 @@ package notification
 
 import (
 	"encoding/json"
-	"github.com/d-sense/go-sms-nigeria/util"
+	"github.com/d-sense/sms-nigeria-go/util"
 	"os"
 	"strings"
 )
