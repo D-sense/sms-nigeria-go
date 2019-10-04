@@ -1,4 +1,4 @@
-package util
+package sms_nigeria_go
 
 import (
 	"io/ioutil"
@@ -23,4 +23,3 @@ func ContactEndpoint(url string) ([]byte, error) {
 
 	return body, nil
 }
-

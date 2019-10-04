@@ -1,4 +1,4 @@
-package notification
+package sms_nigeria_go
 
 //Bulk_SMS_Nigeria service
 type BulkSmsNigeriaRepositoryInterface interface {
