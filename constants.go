@@ -14,6 +14,7 @@ const (
 	SmsCloneDndRoute          = "dnd_route"
 	SmsCloneNormalAndDndRoute = "normal_dnd_route"
 	PossibleCredentialsErr    = "could not authenticate your credentials (username and/or password)"
+	InternetConnectionErr     = "you are not connected to the internet"
 
 	//validation
 	ErrMissingSender    = " Sender field is missing/empty."

@@ -48,6 +48,9 @@ func (stub StubBulkSmsNigeriaRepository) ValidateBulkSmsNigeriaInput(sms *BulkSm
 	return err
 }
 
+func TestBulkSmsNigeriaBaseURL(t *testing.T) {
+
+}
 func TestContactEndpointFunc(t *testing.T) {
 
 }
