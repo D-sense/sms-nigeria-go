@@ -2,7 +2,6 @@ package sms_nigeria_go
 
 import (
 	"errors"
-	"os"
 	"strings"
 )
 
@@ -42,23 +41,23 @@ func (*SmsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (re
 
 	switch route {
 	case SmsCloneNormalRoute :
-		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+os.Getenv("USERNAME")+
-			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+sms.Username+
+			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
 	case SmsCloneDndRoute :
-		preparedURL = SmsCloneDndRouteURLCreate+"?username="+os.Getenv("USERNAME")+
-			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+		preparedURL = SmsCloneDndRouteURLCreate+"?username="+sms.Username+
+			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
 	case SmsCloneNormalAndDndRoute :
-		preparedURL = SmsCloneNormalAndDndRouteURLCreate+"?username="+os.Getenv("USERNAME")+
-			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+		preparedURL = SmsCloneNormalAndDndRouteURLCreate+"?username="+sms.Username+
+			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
 	default :
-		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+os.Getenv("USERNAME")+
-			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+sms.Username+
+			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 	}
 
