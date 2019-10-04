@@ -1,7 +1,5 @@
 language: go
 
-sudo: true
-
 go:
   - master
 
