@@ -23,7 +23,7 @@ type BulkSmsNigeriaResponse struct {
 type BulkSmsNigeriaRepository struct{}
 
 func (*BulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response BulkSmsNigeriaResponse, err error) {
-	prepareURL := BulkSmsNigeriaURLCreate + "?api_token=" +sms.ApiToken+
+	prepareURL := BulkSmsNigeriaURLCreate + "?api_token=" + sms.ApiToken +
 		"&from=" + sms.Sender + "&to=" + sms.Recipient + "&body=" +
 		strings.Replace(sms.Body, " ", "%20", -1)
 

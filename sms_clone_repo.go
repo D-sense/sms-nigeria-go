@@ -6,26 +6,26 @@ import (
 )
 
 type SmsCloneNotification struct {
-	Username     string
-	Password     string
-	Sender       string
-	Recipient    string
-	Message      string
+	Username  string
+	Password  string
+	Sender    string
+	Recipient string
+	Message   string
 }
 
 type SmsCloneCredential struct {
-	Username     string
-	Password     string
+	Username string
+	Password string
 }
 
 type SmsCloneResponse struct {
-	BatchCode                      string                 
-	BatchDescription               string                 
-	StatusCode                     string                 
-	Recipient                      string                 
-	MessageID                      string                 
-	MessageStatus                  string                 
-	StatusDescription              string
+	BatchCode         string
+	BatchDescription  string
+	StatusCode        string
+	Recipient         string
+	MessageID         string
+	MessageStatus     string
+	StatusDescription string
 }
 
 type SmsCloneRepository struct{}
@@ -33,43 +33,43 @@ type SmsCloneRepository struct{}
 func (*SmsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (response SmsCloneResponse, err error) {
 	var smsData SmsCloneNotification
 	var smsClone SmsCloneResponse
-    var preparedURL string
+	var preparedURL string
 
 	smsData.Sender = sms.Sender
 	smsData.Recipient = sms.Recipient
 	smsData.Message = sms.Message
 
 	switch route {
-	case SmsCloneNormalRoute :
-		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+sms.Username+
-			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+	case SmsCloneNormalRoute:
+		preparedURL = SmsCloneNormalRouteURLCreate + "?username=" + sms.Username +
+			"&password=" + sms.Password + "&sender=" + sms.Sender + "&recipient=" + sms.Recipient + "&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
-	case SmsCloneDndRoute :
-		preparedURL = SmsCloneDndRouteURLCreate+"?username="+sms.Username+
-			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+	case SmsCloneDndRoute:
+		preparedURL = SmsCloneDndRouteURLCreate + "?username=" + sms.Username +
+			"&password=" + sms.Password + "&sender=" + sms.Sender + "&recipient=" + sms.Recipient + "&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
-	case SmsCloneNormalAndDndRoute :
-		preparedURL = SmsCloneNormalAndDndRouteURLCreate+"?username="+sms.Username+
-			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+	case SmsCloneNormalAndDndRoute:
+		preparedURL = SmsCloneNormalAndDndRouteURLCreate + "?username=" + sms.Username +
+			"&password=" + sms.Password + "&sender=" + sms.Sender + "&recipient=" + sms.Recipient + "&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
-	default :
-		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+sms.Username+
-			"&password="+sms.Password+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
+	default:
+		preparedURL = SmsCloneNormalRouteURLCreate + "?username=" + sms.Username +
+			"&password=" + sms.Password + "&sender=" + sms.Sender + "&recipient=" + sms.Recipient + "&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 	}
 
 	// contact endpoint
 	var result []byte
 	result, err = ContactEndpoint(preparedURL)
-	if err != nil  {
+	if err != nil {
 		return SmsCloneResponse{}, err
 	}
 
 	smsClone, err = ResponseParser(string(result))
-	if err != nil  {
+	if err != nil {
 		return SmsCloneResponse{}, err
 	}
 
@@ -77,18 +77,18 @@ func (*SmsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (re
 }
 
 func (*SmsCloneRepository) SmsCloneCheckBalance(sms *SmsCloneCredential) (response string, err error) {
-	preparedURL := SmsCloneCheckBalanceURL+"?username="+sms.Username+
-	"&password="+sms.Password
+	preparedURL := SmsCloneCheckBalanceURL + "?username=" + sms.Username +
+		"&password=" + sms.Password
 
 	// contact endpoint
 	var result []byte
-   result, err = ContactEndpoint(preparedURL)
-   if err != nil {
-   	return response, err
-   }
+	result, err = ContactEndpoint(preparedURL)
+	if err != nil {
+		return response, err
+	}
 
-   response = string(result)
-   return response, nil
+	response = string(result)
+	return response, nil
 }
 
 func (*SmsCloneRepository) ValidateSmsCloneInput(smsInfo *SmsCloneNotification) (err map[string]interface{}) {
@@ -154,5 +154,3 @@ func ResponseParser(text string) (parsedResponse SmsCloneResponse, err error) {
 
 	return
 }
-
-
