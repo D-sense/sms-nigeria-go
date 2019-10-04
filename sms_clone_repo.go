@@ -1,10 +1,9 @@
-package notification
+package sms_nigeria_go
 
 import (
 	"errors"
 	"os"
 	"strings"
-	"github.com/d-sense/sms-nigeria-go/util"
 )
 
 type SmsCloneNotification struct {
@@ -42,30 +41,30 @@ func (*SmsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (re
 	smsData.Message = sms.Message
 
 	switch route {
-	case util.SmsCloneNormalRoute :
-		preparedURL = util.SmsCloneNormalRouteURLCreate+"?username="+os.Getenv("USERNAME")+
+	case SmsCloneNormalRoute :
+		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+os.Getenv("USERNAME")+
 			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
-	case util.SmsCloneDndRoute :
-		preparedURL = util.SmsCloneDndRouteURLCreate+"?username="+os.Getenv("USERNAME")+
+	case SmsCloneDndRoute :
+		preparedURL = SmsCloneDndRouteURLCreate+"?username="+os.Getenv("USERNAME")+
 			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
-	case util.SmsCloneNormalAndDndRoute :
-		preparedURL = util.SmsCloneNormalAndDndRouteURLCreate+"?username="+os.Getenv("USERNAME")+
+	case SmsCloneNormalAndDndRoute :
+		preparedURL = SmsCloneNormalAndDndRouteURLCreate+"?username="+os.Getenv("USERNAME")+
 			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 
 	default :
-		preparedURL = util.SmsCloneNormalRouteURLCreate+"?username="+os.Getenv("USERNAME")+
+		preparedURL = SmsCloneNormalRouteURLCreate+"?username="+os.Getenv("USERNAME")+
 			"&password="+os.Getenv("PASSWORD")+"&sender="+sms.Sender+"&recipient="+sms.Recipient+"&message=" +
 			strings.Replace(sms.Message, " ", "%20", -1)
 	}
 
 	// contact endpoint
 	var result []byte
-	result, err = util.ContactEndpoint(preparedURL)
+	result, err = ContactEndpoint(preparedURL)
 	if err != nil  {
 		return SmsCloneResponse{}, err
 	}
@@ -79,12 +78,12 @@ func (*SmsCloneRepository) SmsClone(sms *SmsCloneNotification, route string) (re
 }
 
 func (*SmsCloneRepository) SmsCloneCheckBalance(sms *SmsCloneCredential) (response string, err error) {
-	preparedURL := util.SmsCloneCheckBalanceURL+"?username="+sms.Username+
+	preparedURL := SmsCloneCheckBalanceURL+"?username="+sms.Username+
 	"&password="+sms.Password
 
 	// contact endpoint
 	var result []byte
-   result, err = util.ContactEndpoint(preparedURL)
+   result, err = ContactEndpoint(preparedURL)
    if err != nil {
    	return response, err
    }
@@ -97,23 +96,23 @@ func (*SmsCloneRepository) ValidateSmsCloneInput(smsInfo *SmsCloneNotification) 
 	err = make(map[string]interface{})
 
 	if smsInfo.Username == "" {
-		err["Username"] = util.ErrMissingUsername
+		err["Username"] = ErrMissingUsername
 	}
 
 	if smsInfo.Sender == "" {
-		err["Sender"] = util.ErrMissingSender
+		err["Sender"] = ErrMissingSender
 	}
 
 	if smsInfo.Recipient == "" {
-		err["Recipient"] = util.ErrMissingRecipient
+		err["Recipient"] = ErrMissingRecipient
 	}
 
 	if smsInfo.Message == "" {
-		err["Message"] = util.ErrMissingMessage
+		err["Message"] = ErrMissingMessage
 	}
 
 	if smsInfo.Password == "" {
-		err["Password"] = util.ErrMissingPassword
+		err["Password"] = ErrMissingPassword
 	}
 
 	return
@@ -123,11 +122,11 @@ func (*SmsCloneRepository) ValidateSmsCloneCredentials(smsInfo *SmsCloneCredenti
 	err = make(map[string]interface{})
 
 	if smsInfo.Username == "" {
-		err["Username"] = util.ErrMissingUsername
+		err["Username"] = ErrMissingUsername
 	}
 
 	if smsInfo.Password == "" {
-		err["Password"] = util.ErrMissingPassword
+		err["Password"] = ErrMissingPassword
 	}
 
 	return
@@ -137,7 +136,7 @@ func ResponseParser(text string) (parsedResponse SmsCloneResponse, err error) {
 	result := strings.Split(text, "|")
 
 	if len(result) <= 1 {
-		err = errors.New(util.PossibleCredentialsErr)
+		err = errors.New(PossibleCredentialsErr)
 		return SmsCloneResponse{}, err
 	}
 

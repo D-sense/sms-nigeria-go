@@ -1,22 +1,21 @@
-package notification
+package sms_nigeria_go
 
 import (
 	"encoding/json"
-	"github.com/d-sense/sms-nigeria-go/util"
 	"os"
 	"strings"
 )
 
 type BulkSmsNigeriaNotification struct {
-	Sender       string
-	Recipient    string
-	Body         string
-	ApiToken     string
+	Sender    string
+	Recipient string
+	Body      string
+	ApiToken  string
 }
 
 type BulkSmsNigeriaResponse struct {
 	Status int `json:"0"`
-	Data struct {
+	Data   struct {
 		Status  string `json:"status"`
 		Message string `json:"message"`
 	} `json:"data"`
@@ -32,14 +31,14 @@ func (*BulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification)
 	smsData.Recipient = sms.Recipient
 	smsData.Body = sms.Body
 
-	prepareURL := util.BulkSmsNigeriaURLCreate+"?api_token="+os.Getenv("BULK_SMS_NIGERIA_API_TOKEN")+
-		"&from="+sms.Sender+"&to="+sms.Recipient+"&body=" +
+	prepareURL := BulkSmsNigeriaURLCreate + "?api_token=" + os.Getenv("BULK_SMS_NIGERIA_API_TOKEN") +
+		"&from=" + sms.Sender + "&to=" + sms.Recipient + "&body=" +
 		strings.Replace(sms.Body, " ", "%20", -1)
 
 	// contact endpoint
 	var result []byte
-	result, err = util.ContactEndpoint(prepareURL)
-	if err != nil  {
+	result, err = ContactEndpoint(prepareURL)
+	if err != nil {
 		return BulkSmsNigeriaResponse{}, err
 	}
 
@@ -52,19 +51,19 @@ func (*BulkSmsNigeriaRepository) ValidateBulkSmsNigeriaInput(smsInfo *BulkSmsNig
 	err = make(map[string]interface{})
 
 	if smsInfo.Sender == "" {
-		err["Sender"] = util.ErrMissingSender
+		err["Sender"] = ErrMissingSender
 	}
 
 	if smsInfo.Recipient == "" {
-		err["Recipient"] = util.ErrMissingRecipient
+		err["Recipient"] = ErrMissingRecipient
 	}
 
 	if smsInfo.Body == "" {
-		err["Body"] = util.ErrMissingBody
+		err["Body"] = ErrMissingBody
 	}
 
 	if smsInfo.ApiToken == "" {
-		err["ApiToken"] = util.ErrMissingApiToken
+		err["ApiToken"] = ErrMissingApiToken
 	}
 
 	return
