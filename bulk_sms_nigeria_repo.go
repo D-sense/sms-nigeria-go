@@ -2,7 +2,6 @@ package sms_nigeria_go
 
 import (
 	"encoding/json"
-	"os"
 	"strings"
 )
 
@@ -24,14 +23,7 @@ type BulkSmsNigeriaResponse struct {
 type BulkSmsNigeriaRepository struct{}
 
 func (*BulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification) (response BulkSmsNigeriaResponse, err error) {
-	var smsData BulkSmsNigeriaNotification
-	var bulkSms BulkSmsNigeriaResponse
-
-	smsData.Sender = sms.Sender
-	smsData.Recipient = sms.Recipient
-	smsData.Body = sms.Body
-
-	prepareURL := BulkSmsNigeriaURLCreate + "?api_token=" + os.Getenv("BULK_SMS_NIGERIA_API_TOKEN") +
+	prepareURL := BulkSmsNigeriaURLCreate + "?api_token=" +sms.ApiToken+
 		"&from=" + sms.Sender + "&to=" + sms.Recipient + "&body=" +
 		strings.Replace(sms.Body, " ", "%20", -1)
 
@@ -42,9 +34,9 @@ func (*BulkSmsNigeriaRepository) BulkSmsNigeria(sms *BulkSmsNigeriaNotification)
 		return BulkSmsNigeriaResponse{}, err
 	}
 
-	err = json.Unmarshal(result, &bulkSms)
+	err = json.Unmarshal(result, &response)
 
-	return bulkSms, err
+	return response, err
 }
 
 func (*BulkSmsNigeriaRepository) ValidateBulkSmsNigeriaInput(smsInfo *BulkSmsNigeriaNotification) (err map[string]interface{}) {
