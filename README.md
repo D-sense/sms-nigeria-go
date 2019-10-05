@@ -3,6 +3,16 @@
 [![Build Status](https://travis-ci.com/D-sense/sms-nigeria-go.svg?branch=master)](https://travis-ci.com/D-sense/sms-nigeria-go.svg?branch=master)
 
 
+## Supported SMS vendors    
+| Platform          | Integr
+| ----------------- | ------
+| Bulk Sms Nigeria  | YES   
+| Sms Clone         | YES   
+| Net Bulk SMS      | NO    
+| Padisoft          | NO    
+| Sms mobile 24     | NO    
+
+
 ## Installation
 go get github.com/d-sense/sms-nigeria-go
 
