@@ -1,5 +1,4 @@
 # sms-nigeria-go — Send SMS to any Nigeria phone-number with ease
---
 
 [![Build Status](https://travis-ci.com/D-sense/sms-nigeria-go.svg?branch=master)](https://travis-ci.com/D-sense/sms-nigeria-go.svg?branch=master)
 
